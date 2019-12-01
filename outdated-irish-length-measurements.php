@@ -1,57 +1,70 @@
 <?php
 
-function convert_to_impGallon($value, $from_unit) {
+function convert_to_centi($value, $from_unit) {
   switch($from_unit) {
-    case 'bucket':
-      return $value * 4;
+    case 'grain':
+      return $value * .7;
       break;
-    case 'butt':
-      return $value * 108;
+    case 'thumb_length':
+      return $value * 2.1;
       break;
-    case 'firkin':
-      return $value * 9;
+    case 'palm':
+      return $value * 3.3;
       break;
-    case 'hogshead':
-      return $value * 54;
+    case 'fist':
+      return $value * 10.4;
       break;
-    case 'pint':
-      return $value * 0.125;
+    case 'foot':
+      return $value * 25;
       break;
-    case 'impGallons':
-      return $value;
+    case 'step':
+      return $value * 62.5;
+      break;
+    case 'double_step':
+      return $value * 1500; 
       break;  
+    case 'rod':
+      return $value * 3000;
+      break;     
     default:
       return "Unsupported unit.";
   }
 }
   
-function convert_from_impGallon($value, $to_unit) {
+function convert_from_centi($value, $to_unit) {
   switch($to_unit) {
-    case 'bucket':
-      return $value / 4;
+    case 'grain':
+      return $value / .7;
       break;
-    case 'butt':
-      return $value / 108;
+    case 'thumb_length':
+      return $value / 2.1;
       break;
-    case 'firkin':
-      return $value / 9;
+    case 'palm':
+      return $value / 3.3;
       break;
-    case 'hogshead':
-      return $value / 54;
+    case 'fist':
+      return $value / 10.4;
       break;
-    case 'pint':
-      return $value / 0.125;
+    case 'foot':
+      return $value / 25;
       break;
-    case 'impGallons':
-      return $value;
+    case 'step':
+      return $value / 62.5;
+      break;
+    case 'double_step':
+      return $value / 1500;
+      break;  
+    case 'rod':
+      return $value / 3000;
+      break;     
     default:
       return "Unsupported unit.";
   }
 }
 
-function convert_liquid($value, $from_unit, $to_unit) {
-  $impGallon_value = convert_to_impGallon($value, $from_unit);
-  $new_value = convert_from_impGallon($impGallon_value, $to_unit);
+function convert_length($value, $from_unit, $to_unit) {
+  $centi_value = convert_to_centi($value, $from_unit);
+  $new_value = convert_from_centi($centi_value, $to_unit);
   return $new_value;
 }
 
@@ -65,7 +78,7 @@ if($_POST['submit']) {
   $from_unit = $_POST['from_unit'];
   $to_unit = $_POST['to_unit'];
   
-  $to_value = convert_liquid($from_value, $from_unit, $to_unit);
+  $to_value = convert_length($from_value, $from_unit, $to_unit);
 }
 
 ?>
@@ -73,14 +86,14 @@ if($_POST['submit']) {
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Convert Liquid</title>
+    <title>Convert Outdated Irish Lengths</title>
     <link href="styles.css" rel="stylesheet" type="text/css">
   </head>
   <body>
 
     <div id="main-content">
 
-      <h1>Convert Liquid</h1>
+      <h1>Convert Outdated Irish Lengths</h1>
   
       <form action="" method="post">
         
@@ -88,12 +101,14 @@ if($_POST['submit']) {
           <label>From:</label>&nbsp;
           <input type="text" name="from_value" value="<?php echo $from_value; ?>" />&nbsp;
           <select name="from_unit">
-            <option value="bucket"<?php if($from_unit == 'bucket') { echo " selected"; } ?>>bucket</option>
-            <option value="butt"<?php if($from_unit == 'butt') { echo " selected"; } ?>>butt</option>
-            <option value="firkin"<?php if($from_unit == 'firkin') { echo " selected"; } ?>>firkin</option>
-            <option value="hogshead"<?php if($from_unit == 'hogshead') { echo " selected"; } ?>>hogshead</option>
-            <option value="pint"<?php if($from_unit == 'pint') { echo " selected"; } ?>>pint</option>
-            <option value="impGallons"<?php if($from_unit == 'impGallons') { echo " selected"; } ?>>imperial gallons</option>
+            <option value="grain"<?php if($from_unit == 'grain') { echo " selected"; } ?>>grain</option>
+            <option value="thumb_length"<?php if($from_unit == 'thumb_length') { echo "selected"; } ?>>thumb-length</option>
+            <option value="palm"<?php if($from_unit == 'palm') { echo " selected"; } ?>>palm</option>
+            <option value="fist"<?php if($from_unit == 'fist') { echo " selected"; } ?>>fist</option>
+            <option value="foot"<?php if($from_unit == 'foot') { echo " selected"; } ?>>foot</option>
+            <option value="step"<?php if($from_unit == 'step') { echo " selected"; } ?>>step</option>
+            <option value="double_step"<?php if($from_unit == 'double_step') { echo " selected"; } ?>>double-step</option>
+            <option value="rod"<?php if($from_unit == 'rod') { echo " selected"; } ?>>rod</option>
           </select>
         </div>
         
@@ -101,14 +116,15 @@ if($_POST['submit']) {
           <label>To:</label>&nbsp;
           <input type="text" name="to_value" value="<?php echo $to_value; ?>" />&nbsp;
           <select name="to_unit">
-          <option value="bucket"<?php if($to_unit == 'bucket') { echo " selected"; } ?>>bucket</option>
-            <option value="butt"<?php if($to_unit == 'butt') { echo " selected"; } ?>>butt</option>
-            <option value="firkin"<?php if($to_unit == 'firkin') { echo " selected"; } ?>>firkin</option>
-            <option value="hogshead"<?php if($to_unit == 'hogshead') { echo " selected"; } ?>>hogshead</option>
-            <option value="pint"<?php if($to_unit == 'pint') { echo " selected"; } ?>>pint</option>
-            <option value="impGallons"<?php if($to_unit == 'impGallons') { echo " selected"; } ?>>imperial gallons</option>
+            <option value="grain"<?php if($to_unit == 'grain') { echo " selected"; } ?>>grain</option>
+            <option value="thumb_length"<?php if($to_unit == 'thumb_length') { echo "selected"; } ?>>thumb-length</option>
+            <option value="palm"<?php if($to_unit == 'palm') { echo " selected"; } ?>>palm</option>
+            <option value="fist"<?php if($to_unit == 'fist') { echo " selected"; } ?>>fist</option>
+            <option value="foot"<?php if($to_unit == 'foot') { echo " selected"; } ?>>foot</option>
+            <option value="step"<?php if($to_unit == 'step') { echo " selected"; } ?>>step</option>
+            <option value="double_step"<?php if($to_unit == 'double_step') { echo " selected"; } ?>>double-step</option>
+            <option value="rod"<?php if($to_unit == 'rod') { echo " selected"; } ?>>rod</option>
           </select>
-          
         </div>
         
         <input type="submit" name="submit" value="Submit" />
